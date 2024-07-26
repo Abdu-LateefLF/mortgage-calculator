@@ -1,0 +1,18 @@
+.results {
+  box-shadow: 0 6px 6px hsl(0deg 0% 0% / 0.3);
+  max-width: 400px;
+}
+
+.form-section {
+  transition: 0.3s;
+}
+
+.form-section:hover {
+  box-shadow: 0 6px 6px hsl(0deg 0% 0% / 0.3);
+}
+
+.logo {
+  width: 55px;
+  height: 55px;
+  object-fit: contain;
+}
