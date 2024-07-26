@@ -20,12 +20,14 @@ function App() {
       <h1 className="my-4 px-3 fs-1">
         <img className="logo" src="/logo.png" /> Mortgage Calculator
       </h1>
-      <div className="row px-3">
-        <div className="col-7">
+      <div className="row flex-column flex-lg-row px-3">
+        <div className="col col-lg-7">
           <MortgageForm onFormSubmit={(info) => setMortgageInfo(info)} />
         </div>
-        <div className="col-4 offset-1">
-          <Results info={mortgageInfo} />
+        <div className="col col-lg-4 offset-lg-1">
+          <div className="d-flex justify-content-center">
+            <Results info={mortgageInfo} />
+          </div>
         </div>
       </div>
     </div>

@@ -7,22 +7,17 @@ interface Results {
   totalInterest: number;
 }
 
+const useMortgage = ({loanAmount, interestRate, loanTerm, paymentFrequency: frequency} : MortgageInfo): Results => {
 
-const useMortgage = (info : MortgageInfo): Results => {
-
-  if (!info) return {} as Results;
-
-  const {loanAmount, interestRate, loanTerm} = info;
-
-  const frequency = info.paymentFrequency;
+  if (loanAmount < 10 || interestRate < 0 || loanTerm < 0) return {} as Results;
 
   const p = loanAmount;
   const r = (interestRate / 100) / frequency;
   const n = loanTerm * frequency;
 
-    // Calculate Payments
+  // Calculate Payments
   const payment = (p * r * ((1 + r) **  n)) / (((1 + r) ** n) - 1); 
-
+  
   const totalPayment = payment * n;
 
   const totalInterest = totalPayment - p;

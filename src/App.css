@@ -3,6 +3,11 @@
   max-width: 400px;
 }
 
+.amount {
+  max-width: 275px;
+  word-break: break-all;
+}
+
 .form-section {
   transition: 0.3s;
 }

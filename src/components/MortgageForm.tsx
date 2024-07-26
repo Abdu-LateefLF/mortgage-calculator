@@ -9,28 +9,26 @@ import { MdOutlineClear } from "react-icons/md";
 const schema = z.object({
   loanAmount: z
     .number({
-      required_error: "The principle amount of your loan",
-      invalid_type_error: "Loan amount must be a number",
+      invalid_type_error: "Loan amount is required",
     })
-    .min(0, { message: "Loan amount must be a positive number" })
+    .min(10, { message: "Loan amount must be larger than 10 dollars" })
     .max(1000000000000, {
       message: "Loan amount is too large! Maximum value is 1,000,000,000,000",
     }),
   interestRate: z
     .number({
-      required_error: "The annual interest rate of your loan",
-      invalid_type_error: "Interest rate must be a number",
+      invalid_type_error: "Interest rate is required",
     })
-    .min(0, {
-      message: "Interest rate must be a positive number",
-    }),
+    .min(0.5, {
+      message: "Interest rate must be greater than 0.5%",
+    })
+    .max(200, "Interest rate is too high! Maximum is 200%"),
   loanTerm: z
     .number({
-      required_error: "The number of years in which the loan will be repaid",
-      invalid_type_error: "Loan term must be a number",
+      invalid_type_error: "Loan term is required",
     })
-    .min(0, { message: "Loan term must be a positive number" })
-    .max(1000, { message: "Loan term is too long! Maximum is 1,000 years" }),
+    .min(1, { message: "Loan term must be greater than 1" })
+    .max(100, { message: "Loan term is too long! Maximum is 100 years" }),
   paymentFrequency: z.number(),
 });
 
@@ -51,13 +49,7 @@ function MortgageForm({ onFormSubmit }: Props) {
   });
 
   return (
-    <form
-      className="d-flex flex-column mb-5 fs-5 px-4"
-      onSubmit={handleSubmit((data: FormData) => {
-        console.log(data);
-        onFormSubmit(data);
-      })}
-    >
+    <form noValidate className="d-flex flex-column mb-5 fs-5 px-4">
       <div className="mb-1 p-3 rounded form-section">
         <label htmlFor="loanAmount" className="form-label fw-bold">
           {"Loan Amount ($)"}
@@ -69,11 +61,11 @@ function MortgageForm({ onFormSubmit }: Props) {
           id="loanAmount"
           step="0.1"
         />
-        <div className="form-text">
-          {errors.loanAmount
-            ? errors.loanAmount.message
-            : "The principle amount of your loan"}
-        </div>
+        {errors.loanAmount ? (
+          <p className="form-text text-danger">{errors.loanAmount.message}</p>
+        ) : (
+          <p className="form-text">The principle amount of your loan</p>
+        )}
       </div>
 
       <div className="mb-1 p-3 rounded form-section">
@@ -87,11 +79,11 @@ function MortgageForm({ onFormSubmit }: Props) {
           id="interestRate"
           step="0.1"
         />
-        <div className="form-text">
-          {errors.interestRate
-            ? errors.interestRate.message
-            : "The annual interest rate of your loan"}
-        </div>
+        {errors.interestRate ? (
+          <p className="form-text text-danger">{errors.interestRate.message}</p>
+        ) : (
+          <p className="form-text">The annual interest rate of your loan</p>
+        )}
       </div>
 
       <div className="me-3 mb-1 p-3 rounded form-section">
@@ -105,11 +97,13 @@ function MortgageForm({ onFormSubmit }: Props) {
           id="loanTerm"
           step="0.1"
         />
-        <div className="form-text">
-          {errors.loanTerm
-            ? errors.loanTerm.message
-            : "The number of years in which the loan will be repaid"}
-        </div>
+        {errors.loanTerm ? (
+          <p className="form-text text-danger">{errors.loanTerm.message}</p>
+        ) : (
+          <p className="form-text">
+            The number of years in which the loan will be repaid
+          </p>
+        )}
       </div>
 
       <div className="mb-2 p-3 rounded form-section">
@@ -133,9 +127,10 @@ function MortgageForm({ onFormSubmit }: Props) {
             : "How often the payments are made"}
         </div>
       </div>
-      <div className="d-flex flex-row-reverse">
+      <div className="d-flex flex-column align-items-center flex-lg-row-reverse">
         <button
-          className="btn btn-md btn-danger mx-3"
+          className="btn btn-md btn-danger mx-3 mb-3"
+          type="button"
           onClick={() => {
             reset();
             onFormSubmit({} as MortgageInfo);
@@ -143,7 +138,13 @@ function MortgageForm({ onFormSubmit }: Props) {
         >
           Reset <MdOutlineClear />
         </button>
-        <button className="btn btn-md btn-primary">
+        <button
+          type="button"
+          className="btn btn-md btn-primary mb-3"
+          onClick={handleSubmit((data: FormData) => {
+            onFormSubmit(data);
+          })}
+        >
           Calculate <BsCalculatorFill />
         </button>
       </div>

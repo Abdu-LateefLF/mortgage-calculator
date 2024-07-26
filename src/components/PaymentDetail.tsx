@@ -9,11 +9,11 @@ interface Props {
 
 function PaymentDetail({ title, paymentInfo, children }: Props) {
   return (
-    <div className="mx-4 mb-3 p-3">
+    <div className="mx-4 mb-3 p-3 amount">
       <h4 className="fs-5 text-primary">
         {children} {title}
       </h4>
-      <p className="fs-2">
+      <p className="fs-2 fw-bold">
         {paymentInfo ? (
           <NumericFormat
             value={paymentInfo.toFixed(2)}
